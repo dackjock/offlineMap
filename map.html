@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="main" style="width: 1600px; height: 1000px"></div>
+    <script type="text/javascript" src="js/jquery-3.5.0.js"></script>
+    <script type="text/javascript" src="mp_load.js"></script>
+    <script type="text/javascript" src="nan.js"></script>
+    <script type="text/javascript" src="js/bmap_offline_api.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        var map = new BMap.Map("main", { minZoom: 3, maxZoom: 14 });
+        var point = new BMap.Point(113.908318, 22.519623);
+        map.centerAndZoom(point, 14);
+
+        //设置定位点的弹跳动画
+        var marker = new BMap.Marker(point); // 创建标注
+        map.addOverlay(marker); // 将标注添加到地图中
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        map.enableScrollWheelZoom(true);
+        //添加工具条比例尺控件
+        var top_left_control = new BMap.ScaleControl({
+          anchor: BMAP_ANCHOR_TOP_LEFT,
+        }); // 左上角，添加比例尺
+        var top_left_navigation = new BMap.NavigationControl(); //左上角，添加默认缩放平移控件
+        var top_right_navigation = new BMap.NavigationControl({
+          anchor: BMAP_ANCHOR_TOP_RIGHT,
+          type: BMAP_NAVIGATION_CONTROL_SMALL,
+        }); //右上角，仅包含平移和缩放按钮
+        map.addControl(top_left_control);
+        map.addControl(top_left_navigation);
+        map.addControl(top_right_navigation);
+
+        let count = boundaries.boundaries.length; //行政区域的点有多少个
+        for (let i = 0; i < count; i++) {
+          let ply = new window.BMap.Polygon(boundaries.boundaries[i], {
+            strokeWeight: 2,
+            strokeColor: "#ff0000",
+          }); //建立多边形覆盖物
+          map.addOverlay(ply); //添加覆盖物
+        }
+      });
+    </script>
+  </body>
+</html>
+<!-- 6lUMLT51XlGo99bNugqZe7Yid3ivHjLo -->
